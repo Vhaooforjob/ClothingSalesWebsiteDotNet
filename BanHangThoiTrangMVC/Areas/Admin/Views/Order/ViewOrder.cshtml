@@ -1,0 +1,121 @@
+﻿@model BanHangThoiTrangMVC.Models.EF.Order
+@using PagedList;
+@{
+    ViewBag.Title = "Chi Tiết Đơn Hàng";
+}
+
+@section naviheader{
+    <!-- Left navbar links -->
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="/admin/home" class="nav-link">Trang Chủ</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="/admin/order" class="nav-link">Danh Sách Đơn Hàng</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="#" class="nav-link">Chi Tiết Đơn Hàng</a>
+        </li>
+    </ul>
+}
+<!-- Main content -->
+<section class="content">
+
+    <!-- Default box -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Chi Tiết Đơn Hàng</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Mã Đơn Hàng</label>
+                        <p class="form-control">@Model.Code</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Tên Khách Hàng</label>
+                        <p class="form-control">@Model.CustomerName</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>SDT</label>
+                        <p class="form-control">@Model.Phone</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Tổng Tiền</label>
+                        <p class="form-control">@BanHangThoiTrangMVC.Common.Common.FormatNumber(Model.TotalAmount, 0) VND</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Ngày Tạo</label>
+                        <p class="form-control">@Model.CreateDate.ToString("dd/MM/yyyy")</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Email</label>
+                        <p class="form-control">@Model.Email</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Trạng Thái</label>
+                        @switch (Model.Status)
+                        {
+                            case 1:
+                                <p class="form-control">Chưa thanh toán</p>
+                                break;
+                            case 2:
+                                <p class="form-control">Đã thanh toán</p>
+                                break;
+                            case 3:
+                                <p class="form-control">Hoàn Thành</p>
+                                break;
+                            case 4:
+                                <p class="form-control">Hủy</p>
+                                break;
+                            default:
+                                <p class="form-control">Trạng thái không hợp lệ</p>
+                                break;
+                        }
+                    </div>
+                </div>
+                <div class="col-md-6">
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <h2>Danh Sách Sản Phẩm</h2>
+                </div>
+                <div class="col-12">
+                    @Html.Action("Partial_SanPham", "Order", new { id = Model.Id })
+                </div>
+            </div>
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer">
+
+        </div>
+        <!-- /.card-footer-->
+    </div>
+    <!-- /.card -->
+
+</section>
+<!-- /.content -->
