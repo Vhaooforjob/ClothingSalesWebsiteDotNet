@@ -45,44 +45,42 @@ namespace BanHangThoiTrangMVC.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (model.ProductImages == null)
+                    model.ProductImages = new List<ProductImage>();
+
+                int defaultIndex = 1;
+                if (rDefault != null && rDefault.Count > 0 && rDefault[0] > 0)
+                    defaultIndex = rDefault[0];
+
                 if (Images != null && Images.Count > 0)
                 {
                     for (int i = 0; i < Images.Count; i++)
                     {
-                        if (i + 1 == rDefault[0])
-                        {
-                            model.Image = Images[i];
-                            model.ProductImages.Add(new ProductImage
-                            {
+                        bool isDefault = (i + 1 == defaultIndex);
+                        if (isDefault) model.Image = Images[i];
 
-                                ProductId = model.Id,
-                                Image = Images[i],
-                                IsDefault = true
-                            });
-                        }
-                        else
+                        model.ProductImages.Add(new ProductImage
                         {
-                            model.ProductImages.Add(new ProductImage
-                            {
-                                ProductId = model.Id,
-                                Image = Images[i],
-                                IsDefault = false
-                            });
-                        }
+                            Image = Images[i],
+                            IsDefault = isDefault
+                        });
                     }
                 }
+
                 model.CreateDate = DateTime.Now;
                 model.ModifiedDate = DateTime.Now;
+
                 if (string.IsNullOrEmpty(model.SeoTitle))
-                {
                     model.SeoTitle = model.Title;
-                }
+
                 if (string.IsNullOrEmpty(model.Alias))
                     model.Alias = BanHangThoiTrangMVC.Models.Common.Filter.FilterChar(model.Title);
+
                 db.Products.Add(model);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+
             ViewBag.ProductCategory = new SelectList(db.ProductCategories.ToList(), "Id", "Title");
             return View(model);
         }
