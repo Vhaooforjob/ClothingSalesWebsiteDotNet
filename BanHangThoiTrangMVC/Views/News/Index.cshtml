@@ -30,7 +30,7 @@
 <div class="container news_section_container">
     <div class="row">
         <div class="col-md-12">
-            <h1 class="title-news"> Tin tức</h1>
+            <h1 class="title-news">Tin tức</h1>
         </div>
     </div>
     @if (Model != null && Model.Any())
@@ -40,13 +40,22 @@
             <div class="row row-item-new">
                 <div class="col-md-3">
                     <div class="img-box">
-                        <a href="" title="@item.Title"><img src="@item.Image" alt="@item.Title" /></a>
+                        @if (!string.IsNullOrEmpty(item.Image))
+                         {
+                            <a href="chi-tiet-tin-tuc/@item.Alias-n@(item.Id)" title="@item.Title">
+                                <img src="@item.Image" alt="@item.Title" />
+                            </a>
+                         }
+                        else
+                        {
+                            @* <img src="~/Content/assets/images/no-image.png" alt="No image" /> *@
+                        }
                     </div>
                 </div>
                 <div class="col-md-9">
                     <div class="content-box">
                         <h3><a href="chi-tiet-tin-tuc/@item.Alias-n@(item.Id)" title="@item.Title">@item.Title</a></h3>
-                        <div class="description-box">
+                        <div style="text-align:justify; display:-webkit-box; -webkit-line-clamp:5; -webkit-box-orient:vertical; overflow:hidden;">
                             @item.Description
                         </div>
                     </div>
